@@ -388,9 +388,22 @@ async function initApp(){
     profileMini.innerHTML=`<div style="font-size:13px;color:var(--muted)">${profile.klasse} • ${SCHOOLS.find(s=>s[1]===profile.school)?.[0]||""}</div>`;
   }
 
-  const now=new Date(); const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  const tomorrow=new Date(today); tomorrow.setDate(today.getDate()+1);
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+
+  /* --- Wochenende-Check: Samstag(6) / Sonntag(0) → Montag --- */
+  let dow = today.getDay();
+  if (dow === 6) {        // Samstag
+    today.setDate(today.getDate() + 2);
+  } else if (dow === 0) { // Sonntag
+    today.setDate(today.getDate() + 1);
+  }
+  /* --------------------------------------------------------- */
+
+  const tomorrow=new Date(today);
+  tomorrow.setDate(today.getDate()+1);
   const afterCutoff=now.getHours()>=CUTOFF_HOUR;
+
   let xml=null; let usedDate=formatDateYYYYMMDD(today); let displayLabel="Heute";
 
   if(afterCutoff){
@@ -408,7 +421,11 @@ async function initApp(){
   }
 
   headerSub.textContent=displayLabel;
-  if(!xml){ mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Keine Vertretungsplan-Daten</div><div class="plan-meta">Für ${displayLabel} sind keine Daten verfügbar.</div></div></div>`; return; }
+
+  if(!xml){
+    mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Keine Vertretungsplan-Daten</div><div class="plan-meta">Für ${displayLabel} sind keine Daten verfügbar.</div></div></div>`;
+    return;
+  }
 
   const zusatz=Array.from(xml.getElementsByTagName("ZiZeile")).map(n=>n.textContent?.trim()).filter(Boolean);
   showInfoLines(zusatz);
@@ -464,5 +481,3 @@ window.addEventListener("load",()=>{
 </script>
 </body>
 </html>
-
-
