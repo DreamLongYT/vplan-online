@@ -317,7 +317,7 @@ function iconTagFor(fach){
   img.src = src;
   img.onerror = () => { if(img.src!==FALLBACK_ICON) img.src=FALLBACK_ICON; };
   const iconWrap = document.createElement("div"); iconWrap.className="icon";
-  const colors = { de:"#ffccd5", ma:"#d1e7dd", en:"#cfe2ff", bio:"#d6f5d6", ch:"#C49E1F", ph:"#ED6161", geo:"#41C213", spo:"#fff7aa", mu:"#fde2e4", ku:"#ffe5ec", inf:"#1393C2", eth:"#ED6161", lzc:"#C49E1F", lzi:"#1393C2" };
+  const colors = { de:"#ffccd5", ma:"#d1e7dd", en:"#cfe2ff", bio:"#d6f5d6", ch:"#B1DFAE", ph:"#ED6161", geo:"#41C213", spo:"#fff7aa", mu:"#fde2e4", ku:"#ffe5ec", inf:"#1393C2", eth:"#ED6161", lzc:"#B1DFAE", lzi:"#1393C2", cha:"#B1DFAE", g/r/w:"#9400d3" };
   iconWrap.style.backgroundColor = colors[name.toLowerCase()] || "#ffe5ec";
   iconWrap.appendChild(img); return iconWrap;
 }
@@ -481,4 +481,5 @@ window.addEventListener("load",()=>{
 </script>
 </body>
 </html>
+
 
