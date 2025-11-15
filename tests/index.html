@@ -30,81 +30,31 @@ body{
   align-items:center;
   padding:16px 12px 80px;
 }
-
 .app { width: 100%; max-width:920px; }
-
 .header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
 .h-title { font-size:20px; font-weight:600; color:#0f172a; }
-
-.info-box{
-  display:none;
-  background:var(--info-bg);
-  border-left:6px solid var(--info-border);
-  padding:12px 14px;
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  margin-bottom:12px;
-  color:#1f2937;
-}
-
-.plan-card{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:12px;
-  box-shadow:var(--shadow);
-  margin-bottom:14px;
-  overflow:hidden;
-}
+.info-box{ display:none; background:var(--info-bg); border-left:6px solid var(--info-border); padding:12px 14px; border-radius:10px; box-shadow:var(--shadow); margin-bottom:12px; color:#1f2937; }
+.plan-card{ background:var(--card); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; }
 .plan-head{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-.class-name{font-weight:700; color:var(--accent)}
-.plan-meta{color:var(--muted); font-size:13px}
-
-.lesson-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.lesson{
-  display:grid;
-  grid-template-columns:64px 1fr;
-  gap:10px;
-  align-items:center;
-  padding:10px;
-  border-radius:10px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
-  box-shadow: 0 3px 8px rgba(15,23,42,0.04);
-}
+.class-name{ font-weight:700; color:var(--accent) }
+.plan-meta{ color:var(--muted); font-size:13px }
+.lesson-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px }
+.lesson{ display:grid; grid-template-columns:64px 1fr; gap:10px; align-items:center; padding:10px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); box-shadow: 0 3px 8px rgba(15,23,42,0.04); }
 .lesson .time { font-size:13px; color:var(--muted); text-align:center; }
 .icon { width:48px; height:48px; border-radius:10px; background:var(--lesson-accent); display:flex; align-items:center; justify-content:center; overflow:hidden; margin:auto; }
-.icon img{width:36px; height:36px; object-fit:contain}
-
-.lcontent{display:flex;flex-direction:column;gap:6px}
-.lrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.subject{font-weight:600}
-.fmeta{color:var(--muted); font-size:13px}
-.info-line{color:#334155; font-size:13px; background:#f8fafc; padding:6px 8px; border-radius:8px}
-
-.bottom-nav{
-  position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:16px;
-  width:100%;
-  max-width:920px;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px;
-  box-sizing:border-box;
-  pointer-events:auto;
-}
-.nav-row{display:flex;gap:8px;background:#fff;padding:8px;border-radius:14px;box-shadow:var(--shadow);width:100%;justify-content:space-around}
-.nav-item{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted)}
-.nav-item.active{color:var(--accent); font-weight:600}
-.button{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
-
-.profile-card{background:var(--card); padding:12px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px}
-
-@media (max-width:520px){
-  .lesson{grid-template-columns:56px 1fr}
-  .icon img{width:28px;height:28px}
-}
+.icon img{ width:36px; height:36px; object-fit:contain }
+.lcontent{ display:flex; flex-direction:column; gap:6px }
+.lrow{ display:flex; align-items:center; gap:8px; flex-wrap:wrap }
+.subject{ font-weight:600 }
+.fmeta{ color:var(--muted); font-size:13px }
+.info-line{ color:#334155; font-size:13px; background:#f8fafc; padding:6px 8px; border-radius:8px }
+.bottom-nav{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:100%; max-width:920px; display:flex; justify-content:space-between; gap:10px; padding:10px; box-sizing:border-box; pointer-events:auto; }
+.nav-row{ display:flex; gap:8px; background:#fff; padding:8px; border-radius:14px; box-shadow:var(--shadow); width:100%; justify-content:space-around; }
+.nav-item{ display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted) }
+.nav-item.active{ color:var(--accent); font-weight:600 }
+.button{ background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; border:none; cursor:pointer; }
+.profile-card{ background:var(--card); padding:12px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px }
+@media (max-width:520px){ .lesson{grid-template-columns:56px 1fr} .icon img{width:28px;height:28px} }
 </style>
 </head>
 <body>
@@ -118,7 +68,6 @@ body{
   </div>
 
   <div id="infoBox" class="info-box" aria-hidden="true"></div>
-
   <div id="mainContent"></div>
 
   <div id="profileForm" style="display:none" class="profile-card">
@@ -133,109 +82,90 @@ body{
   </div>
 </div>
 
-<div class="bottom-nav">
-  <div class="nav-row">
-    <div class="nav-item active" id="nav-home">Home</div>
-    <div class="nav-item" id="nav-calendar">Kalender</div>
-    <div class="nav-item" id="nav-search">Suche</div>
-    <div class="nav-item" id="nav-profile">Profil</div>
-  </div>
-</div>
+<div class="bottom-nav"><div class="nav-row"><div class="nav-item active" id="nav-home">Home</div><div class="nav-item" id="nav-calendar">Kalender</div><div class="nav-item" id="nav-search">Suche</div><div class="nav-item" id="nav-profile">Profil</div></div></div>
 
 <script>
 const PROXY = "https://proxy-production-1eec.up.railway.app/api/fetch";
-const ICON_PATH = "https://raw.githubusercontent.com/DreamLongYT/vplan-online/main/assets/app/";
+const ICON_PATH = "assets/app/";
 const FALLBACK_ICON = ICON_PATH + "default.png";
 const CUTOFF_HOUR = 16;
-const SCHOOLS = [
-  ["Gerhart-Hauptmann-Schule Oberschule Sohland","10566374"],
-  ["Freiherr-vom-Stein-Gymnasium Weferlingen","20150177"],
-  ["Gymnasium Dresden-Cotta","10077598"],
-  ["Ehrenfried-Walther-von-Tschirnhaus-Gymnasium","10396458"],
-  ["Oberschule Pausa","10204127"],
-  ["Gymnasium 'Am Breiten Teich' Borna","10048477"],
-  ["Oberschule Lichtentanne","10524931"],
-  ["Gymnasium Dresden-Tolkewitz","10499483"],
-  ["Goethe-Gymnasium der Stadt Leipzig","10467392"],
-  ["Oberschule Schmiedeberg","10482537"],
-  ["Sekundarschule 'An der Doppelkapelle' Landsberg","20148306"],
-  ["Artur-Becker-Oberschule Delitzsch","10294593"],
-  ["Montessori-Schulzentrum Leipzig","10233497"],
-  ["Editha-Gymnasium Magdeburg","20299165"],
-  ["Sekundarschule Möser","20187536"],
-  ["Oberschule Dresden-Pieschen","10311924"],
-  ["Martin-Andersen-Nexö-Gymnasium Dresden","10063764"],
-  ["Testschule","10000000"],
-  ["Friedrich-Schiller-Oberschule Neustadt in Sachsen","10533425"],
-  ["Werner-von-Siemens-Gymnasium Magdeburg","20129987"],
-  ["Gymnasium Dresden-Plauen","10216397"],
-  ["Gymnasium Dresden-Bühlau","10252109"],
-  ["Werner-Heisenberg-Gymnasium Leipzig","10045328"],
-  ["Schiller-Gymnasium Hameln","53018234"],
-  ["Gymnasium Dresden-Pieschen","10490187"],
-  ["Pestalozzi-Schule Demmin","40142395"],
-  ["20. Schule - Oberschule der Stadt Leipzig","10560769"],
-  ["Johannes-Kepler-Schule – Gymnasium der Stadt Leipzig","10073128"]
+const SCHOOLS = [ ["Gerhart-Hauptmann-Schule Oberschule Sohland","10566374"], ["Freiherr-vom-Stein-Gymnasium Weferlingen","20150177"], ["Gymnasium Dresden-Cotta","10077598"], ["Ehrenfried-Walther-von-Tschirnhaus-Gymnasium","10396458"], ["Oberschule Pausa","10204127"], ["Gymnasium 'Am Breiten Teich' Borna","10048477"], ["Oberschule Lichtentanne","10524931"], ["Gymnasium Dresden-Tolkewitz","10499483"], ["Goethe-Gymnasium der Stadt Leipzig","10467392"], ["Oberschule Schmiedeberg","10482537"], ["Sekundarschule 'An der Doppelkapelle' Landsberg","20148306"], ["Artur-Becker-Oberschule Delitzsch","10294593"], ["Montessori-Schulzentrum Leipzig","10233497"], ["Editha-Gymnasium Magdeburg","20299165"], ["Sekundarschule Möser","20187536"], ["Oberschule Dresden-Pieschen","10311924"], ["Martin-Andersen-Nexö-Gymnasium Dresden","10063764"], ["Testschule","10000000"], ["Friedrich-Schiller-Oberschule Neustadt in Sachsen","10533425"], ["Werner-von-Siemens-Gymnasium Magdeburg","20129987"], ["Gymnasium Dresden-Plauen","10216397"], ["Gymnasium Dresden-Bühlau","10252109"], ["Werner-Heisenberg-Gymnasium Leipzig","10045328"], ["Schiller-Gymnasium Hameln","53018234"], ["Gymnasium Dresden-Pieschen","10490187"], ["Pestalozzi-Schule Demmin","40142395"], ["20. Schule - Oberschule der Stadt Leipzig","10560769"], ["Johannes-Kepler-Schule – Gymnasium der Stadt Leipzig","10073128"] ];
+
+/* ============ NEUES SUBJECT-MAPPING ============ */
+const SUBJECT_MAP = [
+  { keys:["de"], color:"#ffccd5", icon:"de" },
+  { keys:["ma"], color:"#d1e7dd", icon:"ma" },
+  { keys:["en"], color:"#cfe2ff", icon:"en" },
+  { keys:["bio","bi"], color:"#d6f5d6", icon:"bio" },
+  { keys:["ch","cha"], color:"#B1DFAE", icon:"ch" },
+  { keys:["ph"], color:"#ED6161", icon:"ph" },
+  { keys:["geo"], color:"#41C213", icon:"geo" },
+  { keys:["spo"], color:"#fff7aa", icon:"spo" },
+  { keys:["mu"], color:"#fde2e4", icon:"mu" },
+  { keys:["ku"], color:"#ffe5ec", icon:"ku" },
+
+  /* eigene Beispiele / erweiterbar */
+  { keys:["inf","lzi","lzc"], color:"#1393C2", icon:"inf" },
+
+  { keys:["eth"], color:"#ED6161", icon:"eth" },
+  { keys:["grw"], color:"#9400d3", icon:"grw" }
 ];
 
-function formatDateYYYYMMDD(d){ return `${d.getFullYear()}${("0"+(d.getMonth()+1)).slice(-2)}${("0"+d.getDate()).slice(-2)}`; }
+function formatDateYYYYMMDD(d){ const y=d.getFullYear(); const m=("0"+(d.getMonth()+1)).slice(-2); const day=("0"+d.getDate()).slice(-2); return ""+y+m+day; }
 function humanDate(d){ return d.toLocaleDateString('de-DE',{weekday:'long', day:'2-digit', month:'long'}); }
 function escapeHtml(s){ return (s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
 
-const infoBox = document.getElementById("infoBox");
-const mainContent = document.getElementById("mainContent");
-const headerSub = document.getElementById("header-sub");
-const profileMini = document.getElementById("profile-mini");
-const profileForm = document.getElementById("profileForm");
-const pfSchool = document.getElementById("pf-school");
+const infoBox=document.getElementById("infoBox");
+const mainContent=document.getElementById("mainContent");
+const headerSub=document.getElementById("header-sub");
+const profileMini=document.getElementById("profile-mini");
+const profileForm=document.getElementById("profileForm");
+const pfSchool=document.getElementById("pf-school");
 
-SCHOOLS.forEach(([name,id])=>{ const o=document.createElement("option"); o.value=id; o.textContent=name; pfSchool.appendChild(o); });
+SCHOOLS.forEach(([name,id])=>{ const opt=document.createElement("option"); opt.value=id; opt.textContent=name; pfSchool.appendChild(opt); });
 
 function getProfile(){ try{return JSON.parse(localStorage.getItem("vplan_profile")||"null");}catch(e){return null;} }
-function saveProfile(p){ localStorage.setItem("vplan_profile", JSON.stringify(p)); }
+function saveProfile(profile){ localStorage.setItem("vplan_profile",JSON.stringify(profile)); }
 
-function showInfoLines(lines){ if(!lines||!lines.length){ infoBox.style.display='none'; return;} infoBox.innerHTML = lines.map(l=>`💡 ${escapeHtml(l)}`).join("<br>"); infoBox.style.display='block'; }
+function showInfoLines(lines){ if(!lines||lines.length===0){ infoBox.style.display='none'; return; } infoBox.innerHTML=lines.map(l=>`💡 ${escapeHtml(l)}`).join("<br>"); infoBox.style.display='block'; }
 
-function safeIconName(fach){ return (fach||"").toLowerCase().replace(/[^a-z0-9äöüß\-]/g,''); }
-
-// ✔️ Updated partial matching icon/color logic
+/* ======= neue ICON-LOGIK ======= */
 function iconTagFor(fach){
-  const name = safeIconName(fach).toLowerCase();
-  const src = ICON_PATH + name + ".png";
+  const name=(fach||"").toLowerCase();
+  let chosenColor="#ffe5ec";
+  let chosenIcon="default";
 
-  const colors = {
-    de: "#ffccd5", ma: "#d1e7dd", en: "#cfe2ff", bio: "#d6f5d6",
-    ch: "#B1DFAE", ph: "#ED6161", geo: "#41C213", spo: "#fff7aa",
-    mu: "#fde2e4", ku: "#ffe5ec", inf: "#1393C2", eth: "#ED6161",
-    lzc: "#B1DFAE", lzi: "#1393C2", cha: "#B1DFAE", grw: "#9400d3"
-  };
+  for(const entry of SUBJECT_MAP){
+    if(entry.keys.some(k=>name.includes(k))){ chosenColor=entry.color; chosenIcon=entry.icon; break; }
+  }
 
-  let bg = "#ffe5ec";
-  for(const key in colors){ if(name.includes(key)){ bg = colors[key]; break; } }
+  const img=document.createElement("img");
+  img.alt=fach||"";
+  img.src=ICON_PATH+chosenIcon+".png";
+  img.onerror=()=>{ img.src=FALLBACK_ICON; };
 
-  const img=document.createElement("img"); img.alt=fach||""; img.src=src;
-  img.onerror = () => { if(img.src!==FALLBACK_ICON) img.src=FALLBACK_ICON; };
-
-  const wrap=document.createElement("div"); wrap.className="icon";
-  wrap.style.backgroundColor = bg;
-  wrap.appendChild(img);
+  const wrap=document.createElement("div"); wrap.className="icon"; wrap.style.backgroundColor=chosenColor; wrap.appendChild(img);
   return wrap;
 }
 
-function renderTimelineForClass(xml, classShort){
+function renderTimelineForClass(xml,classShort){
   mainContent.innerHTML="";
-  const klasse=[...xml.getElementsByTagName("Kl")].find(k => (k.querySelector("Kurz")?.textContent||"") === classShort);
+  const klasse=Array.from(xml.getElementsByTagName("Kl")).find(k=>(k.querySelector("Kurz")?.textContent||"")===classShort);
   if(!klasse){ mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Klasse ${classShort}</div><div class="plan-meta">Kein Plan gefunden</div></div></div>`; return; }
 
-  headerSub.textContent = xml.querySelector("Kopf > DatumPlan")?.textContent || humanDate(new Date());
+  const datumPlan=xml.querySelector("Kopf > DatumPlan")?.textContent||"";
+  headerSub.textContent=datumPlan||humanDate(new Date());
 
   const card=document.createElement("div"); card.className="plan-card";
   const head=document.createElement("div"); head.className="plan-head";
-  head.innerHTML=`<div class="class-name">Klasse ${classShort}</div><div class="plan-meta">${xml.querySelector("Kopf > zeitstempel")?.textContent||""}</div>`;
-  card.appendChild(head);
+  const cls=document.createElement("div"); cls.className="class-name"; cls.textContent=`Klasse ${classShort}`;
+  const meta=document.createElement("div"); meta.className="plan-meta"; meta.textContent=xml.querySelector("Kopf > zeitstempel")?.textContent||"";
+  head.appendChild(cls); head.appendChild(meta); card.appendChild(head);
 
-  const list=document.createElement("div"); list.className="lesson-list";
-  [...klasse.querySelectorAll("Pl > Std")].forEach(std=>{
+  const lessonList=document.createElement("div"); lessonList.className="lesson-list";
+  const lessons=Array.from(klasse.querySelectorAll("Pl > Std"));
+
+  lessons.forEach(std=>{
     const st=std.querySelector("St")?.textContent||"";
     const beg=std.querySelector("Beginn")?.textContent||"";
     const end=std.querySelector("Ende")?.textContent||"";
@@ -244,110 +174,69 @@ function renderTimelineForClass(xml, classShort){
     const ra=std.querySelector("Ra")?.textContent||"";
     const info=std.querySelector("If")?.textContent||"";
 
-    const row=document.createElement("div"); row.className="lesson";
+    const lesson=document.createElement("div"); lesson.className="lesson";
+
     const left=document.createElement("div"); left.className="time";
-    const icon=iconTagFor(fa);
-    left.appendChild(icon);
-    left.innerHTML += `<div style='font-weight:700'>${st}</div><div style='font-size:12px;color:var(--muted)'>${beg}<br>– ${end}</div>`;
+    left.innerHTML=`<div style="font-weight:700">${st}</div><div style="font-size:12px;color:var(--muted)">${beg}<br>– ${end}</div>`;
+    left.prepend(iconTagFor(fa));
 
     const right=document.createElement("div"); right.className="lcontent";
     const top=document.createElement("div"); top.className="lrow";
-    top.innerHTML = `<div class='subject'>${fa||"—"}</div><div class='fmeta'>${le}${ra?` • ${ra}`:""}</div>`;
-    right.appendChild(top);
-    if(info) right.innerHTML += `<div class='info-line'>${info}</div>`;
+    const subject=document.createElement("div"); subject.className="subject"; subject.textContent=fa||"—";
+    const meta2=document.createElement("div"); meta2.className="fmeta"; meta2.textContent=(le?le:"")+(ra?` • ${ra}`:"");
 
-    row.appendChild(left); row.appendChild(right); list.appendChild(row);
+    top.appendChild(subject); top.appendChild(meta2); right.appendChild(top);
+    if(info){ const inf=document.createElement("div"); inf.className="info-line"; inf.textContent=info; right.appendChild(inf); }
+
+    lesson.appendChild(left); lesson.appendChild(right); lessonList.appendChild(lesson);
   });
 
-  card.appendChild(list); mainContent.appendChild(card);
+  card.appendChild(lessonList);
+  mainContent.appendChild(card);
 }
 
-async function fetchPlanFor(profile, dateStr){
+async function fetchPlanFor(profile,dateStr){
   const params=new URLSearchParams({ school_code:profile.school, username:profile.username, password:profile.password, date:dateStr });
-  try{
-    const r=await fetch(PROXY+"?"+params.toString()); if(!r.ok) return null;
-    const text=await r.text(); if(!text.includes("<VpMobil")) return null;
-    return new DOMParser().parseFromString(text, "application/xml");
-  }catch(e){ return null; }
+  const url=PROXY+"?"+params.toString();
+  try{ const r=await fetch(url); if(!r.ok) return null; const text=await r.text(); if(!text||!text.includes("<VpMobil")) return null; return new DOMParser().parseFromString(text,"application/xml"); }catch(e){ return null; }
 }
 
 async function initApp(){
   const profile=getProfile();
-  if(!profile || !profile.school || !profile.username || !profile.password || !profile.klasse){
-    profileForm.style.display="block";
-    document.getElementById("nav-profile").classList.add("active");
-    return;
-  }
+  if(!profile||!profile.school||!profile.username||!profile.password||!profile.klasse){ profileForm.style.display="block"; document.getElementById("nav-profile").classList.add("active"); return; }
+  else{ profileForm.style.display="none"; mainContent.style.display="block"; infoBox.style.display="block"; profileMini.innerHTML=`<div style="font-size:13px;color:var(--muted)">${profile.klasse} • ${SCHOOLS.find(s=>s[1]===profile.school)?.[0]||""}</div>`; }
 
-  profileForm.style.display="none";
-  mainContent.style.display="block";
-  infoBox.style.display="block";
-
-  profileMini.innerHTML = `<div style='font-size:13px;color:var(--muted)'>${profile.klasse} • ${SCHOOLS.find(s=>s[1]===profile.school)?.[0]||""}</div>`;
-
-  const now=new Date();
-  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  let dow=today.getDay();
-  if(dow===6) today.setDate(today.getDate()+2);
-  else if(dow===0) today.setDate(today.getDate()+1);
+  const now=new Date(); const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let dow=today.getDay(); if(dow===6) today.setDate(today.getDate()+2); else if(dow===0) today.setDate(today.getDate()+1);
 
   const tomorrow=new Date(today); tomorrow.setDate(today.getDate()+1);
-  const afterCutoff = now.getHours()>=CUTOFF_HOUR;
+  const afterCutoff=now.getHours()>=CUTOFF_HOUR;
 
-  let xml=null; let usedDate=""; let label="";
+  let xml=null; let usedDate=formatDateYYYYMMDD(today); let displayLabel="Heute";
 
-  if(afterCutoff){
-    xml=await fetchPlanFor(profile, formatDateYYYYMMDD(tomorrow));
-    if(xml){ usedDate=formatDateYYYYMMDD(tomorrow); label=`Morgen — ${humanDate(tomorrow)}`; }
-    else { xml=await fetchPlanFor(profile, formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); label=`Heute — ${humanDate(today)}`; }
-  } else {
-    xml=await fetchPlanFor(profile, formatDateYYYYMMDD(today));
-    usedDate=formatDateYYYYMMDD(today); label=`Heute — ${humanDate(today)}`;
-    if(!xml){ const x2=await fetchPlanFor(profile, formatDateYYYYMMDD(tomorrow)); if(x2){ xml=x2; usedDate=formatDateYYYYMMDD(tomorrow); label=`Morgen — ${humanDate(tomorrow)}`; }}
-  }
+  if(afterCutoff){ const d=formatDateYYYYMMDD(tomorrow); xml=await fetchPlanFor(profile,d); if(xml){ usedDate=d; displayLabel=`Morgen — ${humanDate(tomorrow)}`; } else { xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`;} }
+  else { xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`; if(!xml){ const xml2=await fetchPlanFor(profile,formatDateYYYYMMDD(tomorrow)); if(xml2){ xml=xml2; usedDate=formatDateYYYYMMDD(tomorrow); displayLabel=`Morgen — ${humanDate(tomorrow)}`; } } }
 
-  headerSub.textContent=label;
+  headerSub.textContent=displayLabel;
 
-  if(!xml){ mainContent.innerHTML=`<div class='plan-card'><div class='plan-head'><div class='class-name'>Keine Vertretungsplan-Daten</div><div class='plan-meta'>Für ${label} sind keine Daten verfügbar.</div></div></div>`; return; }
+  if(!xml){ mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Keine Vertretungsplan-Daten</div><div class="plan-meta">Für ${displayLabel} sind keine Daten verfügbar.</div></div></div>`; return; }
 
-  const zusatz=[...xml.getElementsByTagName("ZiZeile")].map(n=>n.textContent?.trim()).filter(Boolean);
+  const zusatz=Array.from(xml.getElementsByTagName("ZiZeile")).map(n=>n.textContent?.trim()).filter(Boolean);
   showInfoLines(zusatz);
-  renderTimelineForClass(xml, profile.klasse);
 
+  renderTimelineForClass(xml,profile.klasse);
   profile._lastFetched=usedDate; saveProfile(profile);
 }
 
-document.getElementById("pf-save").addEventListener("click",()=>{
-  const school=pfSchool.value;
-  const username=document.getElementById("pf-username").value;
-  const password=document.getElementById("pf-password").value;
-  const klasse=document.getElementById("pf-class").value.trim();
-  if(!school||!username||!password||!klasse){ alert("Bitte alle Felder ausfüllen."); return; }
-  saveProfile({ school,username,password,klasse }); location.reload();
+document.getElementById("pf-save").addEventListener("click",ev=>{
+  ev.preventDefault(); const school=pfSchool.value; const username=document.getElementById("pf-username").value; const password=document.getElementById("pf-password").value; const klasse=document.getElementById("pf-class").value.trim(); if(!school||!username||!password||!klasse){ alert("Bitte alle Felder ausfüllen."); return; } const profile={school,username,password,klasse}; saveProfile(profile); location.reload();
 });
 
-document.getElementById("nav-home").addEventListener("click",()=>{
-  document.getElementById("nav-home").classList.add("active");
-  document.getElementById("nav-profile").classList.remove("active");
-  mainContent.style.display="block";
-  infoBox.style.display="block";
-  profileForm.style.display="none";
-  initApp();
-});
+document.getElementById("nav-home").addEventListener("click",()=>{ document.getElementById("nav-home").classList.add("active"); document.getElementById("nav-profile").classList.remove("active"); mainContent.style.display="block"; infoBox.style.display="block"; profileForm.style.display="none"; initApp(); });
 
-document.getElementById("nav-profile").addEventListener("click",()=>{
-  document.getElementById("nav-profile").classList.add("active");
-  document.getElementById("nav-home").classList.remove("active");
-  mainContent.style.display="none";
-  infoBox.style.display="none";
-  profileForm.style.display="block";
-});
+document.getElementById("nav-profile").addEventListener("click",()=>{ document.getElementById("nav-profile").classList.add("active"); document.getElementById("nav-home").classList.remove("active"); mainContent.style.display="none"; infoBox.style.display="none"; profileForm.style.display="block"; document.querySelector(".app").scrollIntoView(); });
 
-window.addEventListener("load",()=>{
-  const p=getProfile();
-  if(p){ pfSchool.value=p.school||""; document.getElementById("pf-username").value=p.username||"schueler"; document.getElementById("pf-password").value=p.password||""; document.getElementById("pf-class").value=p.klasse||""; profileForm.style.display="none"; }
-  initApp();
-});
+window.addEventListener("load",()=>{ const profile=getProfile(); if(profile){ pfSchool.value=profile.school||""; document.getElementById("pf-username").value=profile.username||"schueler"; document.getElementById("pf-password").value=profile.password||""; document.getElementById("pf-class").value=profile.klasse||""; profileForm.style.display="none"; } else profileForm.style.display="block"; initApp(); });
 </script>
 </body>
 </html>
