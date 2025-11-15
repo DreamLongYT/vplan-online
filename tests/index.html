@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vertretungsplan — Home</title>
+<style>
+:root{
+  --bg:#f4f6f8;
+  --card:#fff;
+  --muted:#6b7280;
+  --accent:#007bff;
+  --info-bg:#fffbe6;
+  --info-border:#ffc107;
+  --lesson-accent: #eef2ff;
+  --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  --radius:12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:16px 12px 80px;
+}
+
+/* app container */
+.app {
+  width: 100%;
+  max-width:920px;
+}
+
+/* header */
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.h-title { font-size:20px; font-weight:600; color:#0f172a; }
+
+/* info box */
+.info-box{
+  display:none;
+  background:var(--info-bg);
+  border-left:6px solid var(--info-border);
+  padding:12px 14px;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  color:#1f2937;
+}
+
+/* timeline card */
+.plan-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+.plan-head{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+.class-name{font-weight:700; color:var(--accent)}
+.plan-meta{color:var(--muted); font-size:13px}
+
+/* lesson list (timeline) */
+.lesson-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.lesson{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+  box-shadow: 0 3px 8px rgba(15,23,42,0.04);
+}
+.lesson .time {
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+.icon {
+  width:48px; height:48px;
+  border-radius:10px;
+  background:var(--lesson-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin:auto;
+}
+.icon img{width:36px; height:36px; object-fit:contain}
+
+/* content column */
+.lcontent{display:flex;flex-direction:column;gap:6px}
+.lrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.subject{font-weight:600}
+.fmeta{color:var(--muted); font-size:13px}
+.info-line{color:#334155; font-size:13px; background:#f8fafc; padding:6px 8px; border-radius:8px}
+
+/* bottom navbar */
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:16px;
+  width:100%;
+  max-width:920px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px;
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+.nav-row{
+  display:flex;
+  gap:8px;
+  background:#fff;
+  padding:8px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  width:100%;
+  justify-content:space-around;
+}
+.nav-item{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted)}
+.nav-item.active{color:var(--accent); font-weight:600}
+.button{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+/* simple profile card */
+.profile-card{background:var(--card); padding:12px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px}
+
+/* responsive */
+@media (max-width:520px){
+  .lesson{grid-template-columns:56px 1fr}
+  .icon img{width:28px;height:28px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <div class="h-title">Vertretungsplan</div>
+      <div class="plan-meta" id="header-sub">Heute</div>
+    </div>
+    <div id="profile-mini" style="text-align:right"></div>
+  </div>
+
+  <div id="infoBox" class="info-box" aria-hidden="true"></div>
+
+    <div id="mainContent"></div>
+
+    <div id="profileForm" style="display:none" class="profile-card">
+    <h3>Profil einrichten</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <label>
+        Schule
+        <select id="pf-school" style="width:100%;padding:8px;border-radius:8px">
+          <option value="">— Bitte wählen —</option>
+        </select>
+      </label>
+
+      <label>
+        Rolle
+        <select id="pf-username" style="width:100%;padding:8px;border-radius:8px">
+          <option value="schueler">Schüler</option>
+          <option value="lehrer">Lehrer</option>
+        </select>
+      </label>
+
+      <label>
+        Passwort
+        <input id="pf-password" type="password" style="width:100%;padding:8px;border-radius:8px" />
+      </label>
+
+      <label>
+        Klasse (z.B. 05a)
+        <input id="pf-class" type="text" style="width:100%;padding:8px;border-radius:8px" placeholder="Klasse auswählen oder eingeben"/>
+      </label>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="pf-save" class="button">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-row">
+    <div class="nav-item active" id="nav-home">Home</div>
+    <div class="nav-item" id="nav-calendar">Kalender</div>
+    <div class="nav-item" id="nav-search">Suche</div>
+    <div class="nav-item" id="nav-profile">Profil</div>
+  </div>
+</div>
+
+<script>
+/* -----------------------
+   Configuration & helpers
+   ----------------------- */
+const PROXY = "https://proxy-production-1eec.up.railway.app/api/fetch"; // proxy endpoint
+const ICON_PATH = "assets/app/"; // expecting png icons here
+const FALLBACK_ICON = ICON_PATH + "default.png";
+const CUTOFF_HOUR = 16; // after this attempt tomorrow first
+const SCHOOLS = [
+  ["Gerhart-Hauptmann-Schule Oberschule Sohland","10566374"],
+  ["Freiherr-vom-Stein-Gymnasium Weferlingen","20150177"],
+  ["Gymnasium Dresden-Cotta","10077598"],
+  ["Ehrenfried-Walther-von-Tschirnhaus-Gymnasium","10396458"],
+  ["Oberschule Pausa","10204127"],
+  ["Gymnasium 'Am Breiten Teich' Borna","10048477"],
+  ["Oberschule Lichtentanne","10524931"],
+  ["Gymnasium Dresden-Tolkewitz","10499483"],
+  ["Goethe-Gymnasium der Stadt Leipzig","10467392"],
+  ["Oberschule Schmiedeberg","10482537"],
+  ["Sekundarschule 'An der Doppelkapelle' Landsberg","20148306"],
+  ["Artur-Becker-Oberschule Delitzsch","10294593"],
+  ["Montessori-Schulzentrum Leipzig","10233497"],
+  ["Editha-Gymnasium Magdeburg","20299165"],
+  ["Sekundarschule Möser","20187536"],
+  ["Oberschule Dresden-Pieschen","10311924"],
+  ["Martin-Andersen-Nexö-Gymnasium Dresden","10063764"],
+  ["Testschule","10000000"],
+  ["Friedrich-Schiller-Oberschule Neustadt in Sachsen","10533425"],
+  ["Werner-von-Siemens-Gymnasium Magdeburg","20129987"],
+  ["Gymnasium Dresden-Plauen","10216397"],
+  ["Gymnasium Dresden-Bühlau","10252109"],
+  ["Werner-Heisenberg-Gymnasium Leipzig","10045328"],
+  ["Schiller-Gymnasium Hameln","53018234"],
+  ["Gymnasium Dresden-Pieschen","10490187"],
+  ["Pestalozzi-Schule Demmin","40142395"],
+  ["20. Schule - Oberschule der Stadt Leipzig","10560769"],
+  ["Johannes-Kepler-Schule – Gymnasium der Stadt Leipzig","10073128"]
+];
+
+function formatDateYYYYMMDD(d){
+  const y=d.getFullYear();
+  const m=("0"+(d.getMonth()+1)).slice(-2);
+  const day=("0"+d.getDate()).slice(-2);
+  return ""+y+m+day;
+}
+function humanDate(d){
+  return d.toLocaleDateString('de-DE',{weekday:'long', day:'2-digit', month:'long'});
+}
+function escapeHtml(s){ return (s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+
+/* -----------------------
+   UI initialization
+   ----------------------- */
+const infoBox = document.getElementById("infoBox");
+const mainContent = document.getElementById("mainContent");
+const headerSub = document.getElementById("header-sub");
+const profileMini = document.getElementById("profile-mini");
+const profileForm = document.getElementById("profileForm");
+const pfSchool = document.getElementById("pf-school");
+
+// fill school dropdown in profile
+SCHOOLS.forEach(([name,id])=>{
+  const opt = document.createElement("option");
+  opt.value = id; opt.textContent = name;
+  pfSchool.appendChild(opt);
+});
+
+/* -----------------------
+   Profile / localStorage
+   ----------------------- */
+function getProfile(){
+  try{ return JSON.parse(localStorage.getItem("vplan_profile")||"null"); }
+  catch(e){return null;}
+}
+function saveProfile(profile){ localStorage.setItem("vplan_profile", JSON.stringify(profile)); }
+
+/* -----------------------
+   Render helpers
+   ----------------------- */
+
+// NEW HELPER: Normalizes the subject string for reliable color lookup
+function normalizeSubject(fach) {
+  if (!fach) return "";
+  // 1. Convert to lowercase
+  // 2. Remove all non-alphanumeric characters (slashes, spaces, periods, etc.)
+  return fach.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function showInfoLines(lines){
+  if(!lines || lines.length===0){ infoBox.style.display='none'; return; }
+  infoBox.innerHTML = lines.map(l => `💡 ${escapeHtml(l)}`).join("<br>");
+  infoBox.style.display = 'block';
+}
+
+function safeIconName(fach){
+  if(!fach) return "default";
+  // Used for the icon file name lookup (fach.png)
+  return fach.toString().toLowerCase().replace(/[^a-z0-9äöüß\-]/g,'');
+}
+
+function iconTagFor(fach){
+  const name = safeIconName(fach);
+  const src = ICON_PATH + name + ".png";
+  const img = document.createElement("img");
+  img.alt = fach || "";
+  img.src = src;
+  img.onerror = () => { if(img.src!==FALLBACK_ICON) img.src=FALLBACK_ICON; };
+  const iconWrap = document.createElement("div"); iconWrap.className="icon";
+  
+  // 1. Corrected and normalized keys for the colors object
+  const colors = { 
+    de: "#ffccd5", ma: "#d1e7dd", en: "#cfe2ff", bio: "#d6f5d6", ch: "#B1DFAE", ph: "#ED6161", 
+    geo: "#41C213", spo: "#fff7aa", mu: "#fde2e4", ku: "#ffe5ec", inf: "#1393C2", eth: "#ED6161", 
+    lzc: "#B1DFAE", lzi: "#1393C2", cha: "#B1DFAE", 
+    // The previously problematic key "g/r/w" is replaced with the safe key "grw"
+    grw: "#9400d3" 
+  };
+  
+  // 2. Normalize the current subject name from the timetable data
+  const normalizedFach = normalizeSubject(fach);
+  
+  // 3. Find the color using a flexible "contains" check
+  let color = null;
+  const normalizedKeys = Object.keys(colors);
+
+  // Iterate through keys and check if the normalized subject name includes the key.
+  // This handles G/R/W, GRW, or 'Geschichte/Recht/Wirtschaft' all mapping to 'grw'.
+  for (const key of normalizedKeys) {
+    if (normalizedFach.includes(key)) {
+      color = colors[key];
+      break; // Found the best match, stop searching
+    }
+  }
+
+  // 4. Apply the color, falling back to a default if nothing is found
+  iconWrap.style.backgroundColor = color || "#ffe5ec";
+  iconWrap.appendChild(img); return iconWrap;
+}
+function renderTimelineForClass(xml, classShort){
+  mainContent.innerHTML="";
+  const klasse = Array.from(xml.getElementsByTagName("Kl")).find(k => (k.querySelector("Kurz")?.textContent||"")===classShort);
+  if(!klasse){ 
+    mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Klasse ${classShort}</div><div class="plan-meta">Kein Plan gefunden</div></div></div>`;
+    return;
+  }
+  const datumPlan = xml.querySelector("Kopf > DatumPlan")?.textContent || "";
+  headerSub.textContent = datumPlan || humanDate(new Date());
+
+  const card = document.createElement("div"); card.className="plan-card";
+  const head = document.createElement("div"); head.className="plan-head";
+  const cls = document.createElement("div"); cls.className="class-name"; cls.textContent=`Klasse ${classShort}`;
+  const meta = document.createElement("div"); meta.className="plan-meta"; meta.textContent=xml.querySelector("Kopf > zeitstempel")?.textContent || "";
+  head.appendChild(cls); head.appendChild(meta); card.appendChild(head);
+
+  const lessonList=document.createElement("div"); lessonList.className="lesson-list";
+  const lessons=Array.from(klasse.querySelectorAll("Pl > Std"));
+  lessons.forEach(std=>{
+    const st=std.querySelector("St")?.textContent||"";
+    const beg=std.querySelector("Beginn")?.textContent||"";
+    const end=std.querySelector("Ende")?.textContent||"";
+    const fa=std.querySelector("Fa")?.textContent||"";
+    const le=std.querySelector("Le")?.textContent||"";
+    const ra=std.querySelector("Ra")?.textContent||"";
+    const info=std.querySelector("If")?.textContent||"";
+
+    const lesson=document.createElement("div"); lesson.className="lesson";
+    const left=document.createElement("div"); left.className="time";
+    left.innerHTML=`<div style="font-weight:700">${st}</div><div style="font-size:12px;color:var(--muted)">${beg}<br>– ${end}</div>`;
+    const iconWrap=iconTagFor(fa); left.prepend(iconWrap);
+
+    const right=document.createElement("div"); right.className="lcontent";
+    const topRow=document.createElement("div"); topRow.className="lrow";
+    const subject=document.createElement("div"); subject.className="subject"; subject.textContent=fa||"—";
+    const teacherRoom=document.createElement("div"); teacherRoom.className="fmeta"; teacherRoom.textContent=(le?le:"")+(ra?` • ${ra}`:"");
+    topRow.appendChild(subject); topRow.appendChild(teacherRoom); right.appendChild(topRow);
+    if(info){ const infoLine=document.createElement("div"); infoLine.className="info-line"; infoLine.textContent=info; right.appendChild(infoLine); }
+    lesson.appendChild(left); lesson.appendChild(right); lessonList.appendChild(lesson);
+  });
+  card.appendChild(lessonList); mainContent.appendChild(card);
+}
+
+/* -----------------------
+   Fetch / fallback logic
+   ----------------------- */
+async function fetchPlanFor(profile, dateStr){
+  const params=new URLSearchParams({ school_code: profile.school, username: profile.username, password: profile.password, date: dateStr });
+  const url = PROXY + "?" + params.toString();
+  try{
+    const r=await fetch(url); if(!r.ok) return null;
+    const text=await r.text();
+    if(!text || !text.includes("<VpMobil")) return null;
+    return new DOMParser().parseFromString(text, "application/xml");
+  }catch(e){ return null; }
+}
+
+/* main logic on load */
+async function initApp(){
+  const profile=getProfile();
+  if(!profile || !profile.school || !profile.username || !profile.password || !profile.klasse){
+    profileForm.style.display="block"; document.querySelector(".app").scrollIntoView(); document.getElementById("nav-profile").classList.add("active"); return;
+  } else { 
+    profileForm.style.display="none"; mainContent.style.display="block"; infoBox.style.display="block";
+    profileMini.innerHTML=`<div style="font-size:13px;color:var(--muted)">${profile.klasse} • ${SCHOOLS.find(s=>s[1]===profile.school)?.[0]||""}</div>`;
+  }
+
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+
+  /* --- Wochenende-Check: Samstag(6) / Sonntag(0) → Montag --- */
+  let dow = today.getDay();
+  if (dow === 6) {        // Samstag
+    today.setDate(today.getDate() + 2);
+  } else if (dow === 0) { // Sonntag
+    today.setDate(today.getDate() + 1);
+  }
+  /* --------------------------------------------------------- */
+
+  const tomorrow=new Date(today);
+  tomorrow.setDate(today.getDate()+1);
+  const afterCutoff=now.getHours()>=CUTOFF_HOUR;
+
+  let xml=null; let usedDate=formatDateYYYYMMDD(today); let displayLabel="Heute";
+
+  if(afterCutoff){
+    const dateStr=formatDateYYYYMMDD(tomorrow);
+    xml=await fetchPlanFor(profile,dateStr);
+    if(xml){ usedDate=dateStr; displayLabel=`Morgen — ${humanDate(tomorrow)}`; }
+    else{ xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`; }
+  } else {
+    xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today));
+    usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`;
+    if(!xml){
+      const xml2=await fetchPlanFor(profile,formatDateYYYYMMDD(tomorrow));
+      if(xml2){ xml=xml2; usedDate=formatDateYYYYMMDD(tomorrow); displayLabel=`Morgen — ${humanDate(tomorrow)}`; }
+    }
+  }
+
+  headerSub.textContent=displayLabel;
+
+  if(!xml){
+    mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Keine Vertretungsplan-Daten</div><div class="plan-meta">Für ${displayLabel} sind keine Daten verfügbar.</div></div></div>`;
+    return;
+  }
+
+  const zusatz=Array.from(xml.getElementsByTagName("ZiZeile")).map(n=>n.textContent?.trim()).filter(Boolean);
+  showInfoLines(zusatz);
+  renderTimelineForClass(xml, profile.klasse);
+  profile._lastFetched=usedDate; saveProfile(profile);
+}
+
+/* -----------------------
+   Profile form actions
+   ----------------------- */
+document.getElementById("pf-save").addEventListener("click",(ev)=>{
+  ev.preventDefault();
+  const school=pfSchool.value;
+  const username=document.getElementById("pf-username").value;
+  const password=document.getElementById("pf-password").value;
+  const klasse=document.getElementById("pf-class").value.trim();
+  if(!school || !username || !password || !klasse){ alert("Bitte alle Felder ausfüllen."); return; }
+  const profile={ school, username, password, klasse }; saveProfile(profile); location.reload();
+});
+
+/* -----------------------
+   bottom nav
+   ----------------------- */
+document.getElementById("nav-home").addEventListener("click",()=>{
+  document.getElementById("nav-home").classList.add("active");
+  document.getElementById("nav-profile").classList.remove("active");
+  mainContent.style.display="block";
+  infoBox.style.display="block";
+  profileForm.style.display="none";
+  initApp();
+});
+document.getElementById("nav-profile").addEventListener("click",()=>{
+  document.getElementById("nav-profile").classList.add("active");
+  document.getElementById("nav-home").classList.remove("active");
+  mainContent.style.display="none";
+  infoBox.style.display="none";
+  profileForm.style.display="block";
+  document.querySelector(".app").scrollIntoView();
+});
+
+/* on load */
+window.addEventListener("load",()=>{
+  const profile=getProfile();
+  if(profile){
+    pfSchool.value=profile.school||"";
+    document.getElementById("pf-username").value=profile.username||"schueler";
+    document.getElementById("pf-password").value=profile.password||"";
+    document.getElementById("pf-class").value=profile.klasse||"";
+    profileForm.style.display="none";
+  } else { profileForm.style.display="block"; }
+  initApp();
+});
+</script>
+</body>
+</html>
