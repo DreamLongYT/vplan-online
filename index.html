@@ -110,7 +110,7 @@ const SUBJECT_MAP = [
   { keys:["inf","lzi"], color:"#1393C2", icon:"inf" },
 
   { keys:["eth"], color:"#ED6161", icon:"eth" },
-  { keys:["g/r/w"], color:"#9400d3", icon:"grw" }
+  { keys:["g/r/w", "grw"], color:"#9400d3", icon:"grw" }
 ];
 
 function formatDateYYYYMMDD(d){ const y=d.getFullYear(); const m=("0"+(d.getMonth()+1)).slice(-2); const day=("0"+d.getDate()).slice(-2); return ""+y+m+day; }
@@ -242,4 +242,5 @@ window.addEventListener("load",()=>{ const profile=getProfile(); if(profile){ pf
 </script>
 </body>
 </html>
+
 
