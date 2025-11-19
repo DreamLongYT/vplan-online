@@ -5,49 +5,78 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>VPlan</title>
 <style>
-:root{
-  --bg:#f4f6f8;
-  --card:#fff;
-  --muted:#6b7280;
-  --accent:#007bff;
-  --info-bg:#fffbe6;
-  --info-border:#ffc107;
-  --lesson-accent: #eef2ff;
-  --shadow: 0 6px 18px rgba(16,24,40,0.06);
-  --radius:12px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+/* ==== DARK MODE OVERRIDE ==== */
+:root {
+  --bg:#0d1117;
+  --card:#161b22;
+  --muted:#8b949e;
+  --accent:#58a6ff;
+
+  --info-bg:#1f6feb22;
+  --info-border:#58a6ff;
+
+  --lesson-accent:#21262d;
+
+  --shadow: 0 6px 18px rgba(0,0,0,0.6);
+  color-scheme: dark;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--bg);
-  color:#111827;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:16px 12px 80px;
+
+/* Global */
+body {
+  background:var(--bg) !important;
+  color:#c9d1d9 !important;
 }
-.app { width: 100%; max-width:920px; }
-.header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
-.h-title { font-size:20px; font-weight:600; color:#0f172a; }
-.info-box{ display:none; background:var(--info-bg); border-left:6px solid var(--info-border); padding:12px 14px; border-radius:10px; box-shadow:var(--shadow); margin-bottom:12px; color:#1f2937; }
-.plan-card{ background:var(--card); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; }
-.plan-head{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-.class-name{ font-weight:700; color:var(--accent) }
-.plan-meta{ color:var(--muted); font-size:13px }
-.lesson-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px }
-.lesson{ display:grid; grid-template-columns:64px 1fr; gap:10px; align-items:center; padding:10px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); box-shadow: 0 3px 8px rgba(15,23,42,0.04); }
-.lesson .time { font-size:13px; color:var(--muted); text-align:center; }
-.icon { width:48px; height:48px; border-radius:10px; background:var(--lesson-accent); display:flex; align-items:center; justify-content:center; overflow:hidden; margin:auto; }
-.icon img{ width:36px; height:36px; object-fit:contain }
-.lcontent{ display:flex; flex-direction:column; gap:6px }
-.lrow{ display:flex; align-items:center; gap:8px; flex-wrap:wrap }
-.subject{ font-weight:600 }
-.fmeta{ color:var(--muted); font-size:13px }
-.info-line{ color:#334155; font-size:13px; background:#f8fafc; padding:6px 8px; border-radius:8px }
+
+/* Cards */
+.plan-card,
+.profile-card,
+.nav-row {
+  background:var(--card) !important;
+  box-shadow:var(--shadow) !important;
+}
+
+/* Info box */
+.info-box {
+  background:var(--info-bg) !important;
+  border-left-color:var(--info-border) !important;
+  color:#c9d1d9 !important;
+}
+
+/* Lessons */
+.lesson {
+  background:rgba(255,255,255,0.05) !important;
+  box-shadow:0 3px 8px rgba(0,0,0,0.4) !important;
+}
+
+.icon {
+  background:var(--lesson-accent) !important;
+}
+
+/* Navigation */
+.nav-item.active {
+  color:var(--accent) !important;
+}
+
+/* Buttons */
+.button {
+  background:var(--accent) !important;
+  color:#fff !important;
+}
+
+/* Inputs & selects */
+input,
+select {
+  background:#21262d !important;
+  color:#c9d1d9 !important;
+  border:1px solid #30363d !important;
+}
+
+/* Info inside lessons */
+.info-line {
+  background:#21262d !important;
+  color:#9fb8d1 !important;
+}
+
 .bottom-nav{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:100%; max-width:920px; display:flex; justify-content:space-between; gap:10px; padding:10px; box-sizing:border-box; pointer-events:auto; }
 .nav-row{ display:flex; gap:8px; background:#fff; padding:8px; border-radius:14px; box-shadow:var(--shadow); width:100%; justify-content:space-around; }
 .nav-item{ display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted) }
