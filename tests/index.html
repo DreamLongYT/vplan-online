@@ -123,22 +123,23 @@ const SCHOOLS = [
 
 /* ======= SUBJECT-MAPPING ======= */
 const SUBJECT_MAP = [
-  { keys:["de","daz"], color:"#ffccd5", icon:"book_marked" },
+  { keys:["daz", "de", "deu"], color:"#ffccd5", icon:"book_marked" },
   { keys:["ma","maa"], color:"#d1e7dd", icon:"pi" },
-  { keys:["en","englisch","eng"], color:"#cfe2ff", icon:"union_jack" },
-  { keys:["bio","biologie","bi"], color:"#d6f5d6", icon:"microscope" },
-  { keys:["ch","chemie"], color:"#B1DFAE", icon:"flask_conical" },
-  { keys:["ph","physik","pha"], color:"#ED6161", icon:"atom" },
-  { keys:["geo","geographie","geo"], color:"#41C213", icon:"earth" },
-  { keys:["sport","sp"], color:"#fff7aa", icon:"dumbbell" },
-  { keys:["musik","mu"], color:"#fde2e4", icon:"music" },
+  { keys:["en", "eng", "englisch"], color:"#cfe2ff", icon:"union_jack" },
+  { keys:["bio", "bia", "biologie"], color:"#d6f5d6", icon:"microscope" },
+  { keys:["ch", "cha", "chemie"], color:"#B1DFAE", icon:"flask_conical" },
+  { keys:["ph", "phy", "lzp", "pha", "physik"], color:"#ED6161", icon:"atom" },
+  { keys:["geo", "geographie", "geografie"], color:"#41C213", icon:"earth" },
+  { keys:["sp", "spo", "spm", "spw", "sport"], color:"#fff7aa", icon:"dumbbell" },
+  { keys:["mu", "musik"], color:"#fde2e4", icon:"music" },
   { keys:["kunst","ku"], color:"#ffe5ec", icon:"brush" },
-  { keys:["astro","astronomie", "ast"], color:"#B0C4DE", icon:"telescope" },
-  { keys:["inf","informatik","it"], color:"#1393C2", icon:"braces" },
-  { keys:["re"], color:"#FAD7A0", icon:"church" },
-  { keys:["ethik","eth"], color:"#ED6161", icon:"heart_handshake" },
-  { keys:["fr","französisch"], color:"#FDEBD0", icon:"croissant" },
-  { keys:["g/r/w", "grw"], color:"#9400d3", icon:"scale" },
+  { keys:["ast", "astro", "astronomie"], color:"#B0C4DE", icon:"telescope" },
+  { keys:["inf", "it", "informatik"], color:"#1393C2", icon:"braces" },
+  { keys:["re", "ree", "religion"], color:"#FAD7A0", icon:"church" },
+  { keys:["eth", "ethik"], color:"#ED6161", icon:"heart_handshake" },
+  { keys:["fr", "fra", "französisch"], color:"#FDEBD0", icon:"croissant" },
+  { keys:["grw", "wirtschaft", "g/r/w"], color:"#9400d3", icon:"scale" },
+  { keys:["ge", "geschichte"], color:"#FF8B003F", icon:"scroll_text" },
 ];
 
 function formatDateYYYYMMDD(d){ const y=d.getFullYear(); const m=("0"+(d.getMonth()+1)).slice(-2); const day=("0"+d.getDate()).slice(-2); return ""+y+m+day; }
