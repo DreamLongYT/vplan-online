@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>VPlan</title>
 <style>
-/* ==== DARK MODE OVERRIDE ==== */
-:root {
+/* ---------------------------------------------------
+   DARK MODE VARIABLES
+--------------------------------------------------- */
+:root{
   --bg:#0d1117;
   --card:#161b22;
   --muted:#8b949e;
@@ -18,72 +20,210 @@
   --lesson-accent:#21262d;
 
   --shadow: 0 6px 18px rgba(0,0,0,0.6);
+  --radius:12px;
+
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color-scheme: dark;
 }
 
-/* Global */
-body {
-  background:var(--bg) !important;
-  color:#c9d1d9 !important;
+/* ---------------------------------------------------
+   GLOBAL
+--------------------------------------------------- */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#c9d1d9;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:16px 12px 80px;
 }
 
-/* Cards */
-.plan-card,
-.profile-card,
-.nav-row {
-  background:var(--card) !important;
-  box-shadow:var(--shadow) !important;
+.app { width: 100%; max-width:920px; }
+
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
 }
 
-/* Info box */
-.info-box {
-  background:var(--info-bg) !important;
-  border-left-color:var(--info-border) !important;
-  color:#c9d1d9 !important;
+.h-title { font-size:20px; font-weight:600; color:#e6edf3; }
+
+.plan-meta { color:var(--muted); font-size:13px }
+
+/* ---------------------------------------------------
+   INFO BOX
+--------------------------------------------------- */
+.info-box{
+  display:none;
+  background:var(--info-bg);
+  border-left:6px solid var(--info-border);
+  padding:12px 14px;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  color:#c9d1d9;
 }
 
-/* Lessons */
-.lesson {
-  background:rgba(255,255,255,0.05) !important;
-  box-shadow:0 3px 8px rgba(0,0,0,0.4) !important;
+/* ---------------------------------------------------
+   PLAN CARD
+--------------------------------------------------- */
+.plan-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.plan-head{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.class-name{
+  font-weight:700;
+  color:var(--accent)
+}
+
+/* ---------------------------------------------------
+   LESSONS
+--------------------------------------------------- */
+.lesson-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:6px;
+}
+
+.lesson{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  box-shadow:0 3px 8px rgba(0,0,0,0.4);
+}
+
+.lesson .time {
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
 }
 
 .icon {
-  background:var(--lesson-accent) !important;
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:var(--lesson-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin:auto;
 }
 
-/* Navigation */
-.nav-item.active {
-  color:var(--accent) !important;
+.icon img{
+  width:36px;
+  height:36px;
+  object-fit:contain
 }
 
-/* Buttons */
-.button {
-  background:var(--accent) !important;
-  color:#fff !important;
+.subject{ font-weight:600; color:#e6edf3 }
+
+.fmeta{ color:var(--muted); font-size:13px }
+
+.info-line{
+  color:#9fb8d1;
+  font-size:13px;
+  background:#21262d;
+  padding:6px 8px;
+  border-radius:8px
 }
 
-/* Inputs & selects */
-input,
-select {
-  background:#21262d !important;
-  color:#c9d1d9 !important;
-  border:1px solid #30363d !important;
+/* ---------------------------------------------------
+   PROFILE CARD
+--------------------------------------------------- */
+.profile-card{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px
 }
 
-/* Info inside lessons */
-.info-line {
-  background:#21262d !important;
-  color:#9fb8d1 !important;
+input,select{
+  background:#21262d;
+  color:#c9d1d9;
+  border:1px solid #30363d;
 }
 
-.bottom-nav{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:100%; max-width:920px; display:flex; justify-content:space-between; gap:10px; padding:10px; box-sizing:border-box; pointer-events:auto; }
-.nav-row{ display:flex; gap:8px; background:#fff; padding:8px; border-radius:14px; box-shadow:var(--shadow); width:100%; justify-content:space-around; }
-.nav-item{ display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted) }
-.nav-item.active{ color:var(--accent); font-weight:600 }
-.button{ background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; border:none; cursor:pointer; }
-.profile-card{ background:var(--card); padding:12px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px }
-@media (max-width:520px){ .lesson{grid-template-columns:56px 1fr} .icon img{width:28px;height:28px} }
+.button{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+/* ---------------------------------------------------
+   NAVIGATION
+--------------------------------------------------- */
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:16px;
+  width:100%;
+  max-width:920px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px;
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+
+.nav-row{
+  display:flex;
+  gap:8px;
+  background:var(--card);
+  padding:8px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  width:100%;
+  justify-content:space-around;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted)
+}
+
+.nav-item.active{
+  color:var(--accent);
+  font-weight:600
+}
+
+@media (max-width:520px){
+  .lesson{grid-template-columns:56px 1fr}
+  .icon img{width:28px;height:28px}
+}
 </style>
 </head>
 <body>
