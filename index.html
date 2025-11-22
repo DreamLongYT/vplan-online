@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>VPlan</title>
 <style>
-/* ---------------------------------------------------
-   DARK MODE VARIABLES
---------------------------------------------------- */
 :root{
   --bg:#0d1117;
   --card:#161b22;
@@ -25,10 +22,6 @@
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color-scheme: dark;
 }
-
-/* ---------------------------------------------------
-   GLOBAL
---------------------------------------------------- */
 *{box-sizing:border-box}
 body{
   margin:0;
@@ -42,9 +35,7 @@ body{
   align-items:center;
   padding:16px 12px 80px;
 }
-
 .app { width: 100%; max-width:920px; }
-
 .header {
   display:flex;
   align-items:center;
@@ -52,14 +43,8 @@ body{
   gap:12px;
   margin-bottom:12px;
 }
-
 .h-title { font-size:20px; font-weight:600; color:#e6edf3; }
-
 .plan-meta { color:var(--muted); font-size:13px }
-
-/* ---------------------------------------------------
-   INFO BOX
---------------------------------------------------- */
 .info-box{
   display:none;
   background:var(--info-bg);
@@ -70,10 +55,6 @@ body{
   margin-bottom:12px;
   color:#c9d1d9;
 }
-
-/* ---------------------------------------------------
-   PLAN CARD
---------------------------------------------------- */
 .plan-card{
   background:var(--card);
   border-radius:var(--radius);
@@ -94,17 +75,12 @@ body{
   font-weight:700;
   color:var()
 }
-
-/* ---------------------------------------------------
-   LESSONS
---------------------------------------------------- */
 .lesson-list{
   display:flex;
   flex-direction:column;
   gap:10px;
   margin-top:6px;
 }
-
 .lesson{
   display:grid;
   grid-template-columns:64px 1fr;
@@ -115,7 +91,6 @@ body{
   background:rgba(255,255,255,0.05);
   box-shadow:0 3px 8px rgba(0,0,0,0.4);
 }
-
 .lesson .time {
   font-size:13px;
   color:var(--muted);
@@ -151,10 +126,6 @@ body{
   padding:6px 8px;
   border-radius:8px
 }
-
-/* ---------------------------------------------------
-   PROFILE CARD
---------------------------------------------------- */
 .profile-card{
   background:var(--card);
   padding:12px;
@@ -177,10 +148,6 @@ input,select{
   border:none;
   cursor:pointer;
 }
-
-/* ---------------------------------------------------
-   NAVIGATION
---------------------------------------------------- */
 .bottom-nav{
   position:fixed;
   left:50%;
@@ -289,8 +256,6 @@ const SCHOOLS = [
   ["Johannes-Kepler-Schule – Gymnasium der Stadt Leipzig","10073128"]
 ];
 
-
-/* ======= SUBJECT-MAPPING ======= */
 const SUBJECT_MAP = [
   { keys:["ast", "astro", "astronomie"], color:"#27a4c4", icon:"telescope" },
   { keys:["bio", "bia", "biologie", "lzb"], color:"#71d670", icon:"microscope" },
@@ -322,12 +287,9 @@ const headerSub=document.getElementById("header-sub");
 const profileMini=document.getElementById("profile-mini");
 const profileForm=document.getElementById("profileForm");
 const pfSchool=document.getElementById("pf-school");
-
 SCHOOLS.forEach(([name,id])=>{ const opt=document.createElement("option"); opt.value=id; opt.textContent=name; pfSchool.appendChild(opt); });
-
 function getProfile(){ try{return JSON.parse(localStorage.getItem("vplan_profile")||"null");}catch(e){return null;} }
 function saveProfile(profile){ localStorage.setItem("vplan_profile",JSON.stringify(profile)); }
-
 function showInfoLines(lines){ if(!lines||lines.length===0){ infoBox.style.display='none'; return; } infoBox.innerHTML=lines.map(l=>`💡 ${escapeHtml(l)}`).join("<br>"); infoBox.style.display='block'; }
 
 function iconTagFor(fach){
@@ -424,9 +386,7 @@ async function initApp(){
 }
 
 document.getElementById("pf-save").addEventListener("click",ev=>{ ev.preventDefault(); const school=pfSchool.value; const username=document.getElementById("pf-username").value; const password=document.getElementById("pf-password").value; const klasse=document.getElementById("pf-class").value.trim(); if(!school||!username||!password||!klasse){ alert("Bitte alle Felder ausfüllen."); return; } const profile={school,username,password,klasse}; saveProfile(profile); location.reload(); });
-
 document.getElementById("nav-home").addEventListener("click",()=>{ document.getElementById("nav-home").classList.add("active"); document.getElementById("nav-profile").classList.remove("active"); mainContent.style.display="block"; infoBox.style.display="block"; profileForm.style.display="none"; initApp(); });
-
 document.getElementById("nav-profile").addEventListener("click",()=>{ document.getElementById("nav-profile").classList.add("active"); document.getElementById("nav-home").classList.remove("active"); mainContent.style.display="none"; infoBox.style.display="none"; profileForm.style.display="block"; document.querySelector(".app").scrollIntoView(); });
 
 window.addEventListener("load",()=>{ const profile=getProfile(); if(profile){ pfSchool.value=profile.school||""; document.getElementById("pf-username").value=profile.username||"schueler"; document.getElementById("pf-password").value=profile.password||""; document.getElementById("pf-class").value=profile.klasse||""; profileForm.style.display="none"; } else profileForm.style.display="block"; initApp(); });
