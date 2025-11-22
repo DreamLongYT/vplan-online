@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VPlan</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --card:#161b22;
+  --muted:#8b949e;
+  --accent:#6eecbd;
+
+  --info-bg:#1f6feb22;
+  --info-border:#58a6ff;
+
+  --lesson-accent:#21262d;
+
+  --shadow: 0 6px 18px rgba(0,0,0,0.6);
+  --radius:12px;
+
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#c9d1d9;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:16px 12px 80px;
+}
+.app { width: 100%; max-width:920px; }
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.h-title { font-size:20px; font-weight:600; color:#e6edf3; }
+.plan-meta { color:var(--muted); font-size:13px }
+.info-box{
+  display:none;
+  background:var(--info-bg);
+  border-left:6px solid var(--info-border);
+  padding:12px 14px;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  color:#c9d1d9;
+}
+.plan-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.plan-head{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.class-name{
+  font-weight:700;
+  color:var()
+}
+.lesson-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:6px;
+}
+.lesson{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  box-shadow:0 3px 8px rgba(0,0,0,0.4);
+}
+.lesson .time {
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.icon {
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:var(--lesson-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin:auto;
+}
+
+.icon img{
+  width:36px;
+  height:36px;
+  object-fit:contain
+}
+
+.subject{ font-weight:600; color:#e6edf3 }
+
+.fmeta{ color:var(--muted); font-size:13px }
+
+.info-line{
+  color:#9fb8d1;
+  font-size:13px;
+  background:#21262d;
+  padding:6px 8px;
+  border-radius:8px
+}
+.profile-card{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px
+}
+
+input,select{
+  background:#21262d;
+  color:#c9d1d9;
+  border:1px solid #30363d;
+}
+
+.button {
+  background:#2385ff !important; 
+  color:#ffffff !important;
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:16px;
+  width:100%;
+  max-width:920px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px;
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+
+.nav-row{
+  display:flex;
+  gap:8px;
+  background:var(--card);
+  padding:8px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  width:100%;
+  justify-content:space-around;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted)
+}
+
+.nav-item.active{
+  color:var();
+  font-weight:600
+}
+
+@media (max-width:520px){
+  .lesson{grid-template-columns:56px 1fr}
+  .icon img{width:28px;height:28px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <div class="h-title">Vertretungsplan</div>
+      <div class="plan-meta" id="header-sub">Heute</div>
+    </div>
+    <div id="profile-mini" style="text-align:right"></div>
+  </div>
+
+  <div id="infoBox" class="info-box" aria-hidden="true"></div>
+  <div id="mainContent"></div>
+
+  <div id="profileForm" style="display:none" class="profile-card">
+    <h3>Profil einrichten</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <label>Schule<select id="pf-school" style="width:100%;padding:8px;border-radius:8px"><option value="">— Bitte wählen —</option></select></label>
+      <label>Rolle<select id="pf-username" style="width:100%;padding:8px;border-radius:8px"><option value="schueler">Schüler</option><option value="lehrer">Lehrer</option></select></label>
+      <label>Passwort<input id="pf-password" type="password" style="width:100%;padding:8px;border-radius:8px" /></label>
+      <label>Klasse<input id="pf-class" type="text" style="width:100%;padding:8px;border-radius:8px" placeholder="Klasse auswählen oder eingeben"/></label>
+      <div style="display:flex;gap:8px;justify-content:flex-end"><button id="pf-save" class="button">Speichern</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav"><div class="nav-row"><div class="nav-item active" id="nav-home">Home</div><div class="nav-item" id="nav-calendar">Kalender</div><div class="nav-item" id="nav-search">Suche</div><div class="nav-item" id="nav-profile">Profil</div></div></div>
+
+<script>
+const PROXY = "https://proxy-production-1eec.up.railway.app/api/fetch";
+const ICON_PATH = "https://raw.githubusercontent.com/VPlanPlus-Project/app/main/composeApp/src/commonMain/composeResources/drawable/";
+const FALLBACK_ICON = ICON_PATH + "square_x.png"; 
+const CUTOFF_HOUR = 16;
+const SCHOOLS = [
+  ["Gerhart-Hauptmann-Schule Oberschule Sohland","10566374"],
+  ["Freiherr-vom-Stein-Gymnasium Weferlingen","20150177"],
+  ["Gymnasium Dresden-Cotta","10077598"],
+  ["Ehrenfried-Walther-von-Tschirnhaus-Gymnasium","10396458"],
+  ["Oberschule Pausa","10204127"],
+  ["Gymnasium 'Am Breiten Teich' Borna","10048477"],
+  ["Oberschule Lichtentanne","10524931"],
+  ["Gymnasium Dresden-Tolkewitz","10499483"],
+  ["Goethe-Gymnasium der Stadt Leipzig","10467392"],
+  ["Oberschule Schmiedeberg","10482537"],
+  ["Sekundarschule 'An der Doppelkapelle' Landsberg","20148306"],
+  ["Artur-Becker-Oberschule Delitzsch","10294593"],
+  ["Montessori-Schulzentrum Leipzig","10233497"],
+  ["Editha-Gymnasium Magdeburg","20299165"],
+  ["Sekundarschule Möser","20187536"],
+  ["Oberschule Dresden-Pieschen","10311924"],
+  ["Martin-Andersen-Nexö-Gymnasium Dresden","10063764"],
+  ["Testschule","10000000"],
+  ["Friedrich-Schiller-Oberschule Neustadt in Sachsen","10533425"],
+  ["Werner-von-Siemens-Gymnasium Magdeburg","20129987"],
+  ["Gymnasium Dresden-Plauen","10216397"],
+  ["Gymnasium Dresden-Bühlau","10252109"],
+  ["Werner-Heisenberg-Gymnasium Leipzig","10045328"],
+  ["Schiller-Gymnasium Hameln","53018234"],
+  ["Gymnasium Dresden-Pieschen","10490187"],
+  ["Pestalozzi-Schule Demmin","40142395"],
+  ["20. Schule - Oberschule der Stadt Leipzig","10560769"],
+  ["Johannes-Kepler-Schule – Gymnasium der Stadt Leipzig","10073128"]
+];
+
+const SUBJECT_MAP = [
+  { keys:["ast", "astro", "astronomie"], color:"#27a4c4", icon:"telescope" },
+  { keys:["bio", "bia", "biologie", "lzb"], color:"#71d670", icon:"microscope" },
+  { keys:["ch", "cha", "chemie", "lzc"], color:"#d2cd37", icon:"flask_conical" },
+  { keys:["daz", "de", "deu"], color:"#EA0023", icon:"book_marked" },
+  { keys:["ma","maa", "lzm"], color:"#d1e7dd", icon:"pi" },
+  { keys:["en", "eng", "englisch"], color:"#cfe2ff", icon:"union_jack" },
+  { keys:["ph", "phy", "lzp", "pha", "physik"], color:"#ED6161", icon:"atom" },
+  { keys:["geo", "geographie", "geografie"], color:"#41C213", icon:"earth" },
+  { keys:["sp", "spo", "spm", "spw", "sport"], color:"#fff7aa", icon:"dumbbell" },
+  { keys:["mu", "musik"], color:"#fde2e4", icon:"music" },
+  { keys:["kunst","ku"], color:"#ffe5ec", icon:"brush" },
+  { keys:["inf", "it", "informatik", "lzi"], color:"#1393C2", icon:"braces" },
+  { keys:["re", "ree", "religion"], color:"#FAD7A0", icon:"church" },
+  { keys:["eth", "ethik"], color:"#ED6161", icon:"heart_handshake" },
+  { keys:["fr", "fra", "französisch"], color:"#FDEBD0", icon:"croissant" },
+  { keys:["grw", "wirtschaft", "g/r/w"], color:"#9400d3", icon:"scale" },
+  { keys:["ge", "geschichte"], color:"#df9949", icon:"scroll_text" },
+   {keys:["---"], color:"#ffe5ec", icon:"square_x" },
+];
+
+function formatDateYYYYMMDD(d){ const y=d.getFullYear(); const m=("0"+(d.getMonth()+1)).slice(-2); const day=("0"+d.getDate()).slice(-2); return ""+y+m+day; }
+function humanDate(d){ return d.toLocaleDateString('de-DE',{weekday:'long', day:'2-digit', month:'long'}); }
+function escapeHtml(s){ return (s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+
+const infoBox=document.getElementById("infoBox");
+const mainContent=document.getElementById("mainContent");
+const headerSub=document.getElementById("header-sub");
+const profileMini=document.getElementById("profile-mini");
+const profileForm=document.getElementById("profileForm");
+const pfSchool=document.getElementById("pf-school");
+SCHOOLS.forEach(([name,id])=>{ const opt=document.createElement("option"); opt.value=id; opt.textContent=name; pfSchool.appendChild(opt); });
+function getProfile(){ try{return JSON.parse(localStorage.getItem("vplan_profile")||"null");}catch(e){return null;} }
+function saveProfile(profile){ localStorage.setItem("vplan_profile",JSON.stringify(profile)); }
+function showInfoLines(lines){ if(!lines||lines.length===0){ infoBox.style.display='none'; return; } infoBox.innerHTML=lines.map(l=>`💡 ${escapeHtml(l)}`).join("<br>"); infoBox.style.display='block'; }
+
+function iconTagFor(fach){
+  const name = (fach||"").toLowerCase().trim();
+  let chosenColor = "#abbee2";
+  let chosenIcon = "graduation_cap"; 
+  if(name === "---") { chosenIcon = "square_x"; chosenColor = "#f8d7da"; }
+  else { for(const entry of SUBJECT_MAP){ if(entry.keys.some(k=>name.includes(k))){ chosenColor = entry.color; chosenIcon = entry.icon; break; } } }
+  const img=document.createElement("img");
+  img.alt=fach||"";
+  img.src=ICON_PATH + chosenIcon + ".png";
+  img.onerror=()=>{ img.src=FALLBACK_ICON; };
+  const wrap=document.createElement("div"); wrap.className="icon"; wrap.style.backgroundColor=chosenColor; wrap.appendChild(img);
+  return wrap;
+}
+
+function renderTimelineForClass(xml,classShort){
+  mainContent.innerHTML="";
+  const klasse=Array.from(xml.getElementsByTagName("Kl")).find(k=>(k.querySelector("Kurz")?.textContent||"")===classShort);
+  if(!klasse){ mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Klasse ${classShort}</div><div class="plan-meta">Kein Plan gefunden</div></div></div>`; return; }
+
+  const datumPlan=xml.querySelector("Kopf > DatumPlan")?.textContent||"";
+  headerSub.textContent=datumPlan||humanDate(new Date());
+
+  const card=document.createElement("div"); card.className="plan-card";
+  const head=document.createElement("div"); head.className="plan-head";
+  const cls=document.createElement("div"); cls.className="class-name"; cls.textContent=`Klasse ${classShort}`;
+  const meta=document.createElement("div"); meta.className="plan-meta"; meta.textContent=xml.querySelector("Kopf > zeitstempel")?.textContent||"";
+  head.appendChild(cls); head.appendChild(meta); card.appendChild(head);
+
+  const lessonList=document.createElement("div"); lessonList.className="lesson-list";
+  const lessons=Array.from(klasse.querySelectorAll("Pl > Std"));
+
+  lessons.forEach(std=>{
+    const st=std.querySelector("St")?.textContent||"";
+    const beg=std.querySelector("Beginn")?.textContent||"";
+    const end=std.querySelector("Ende")?.textContent||"";
+    const fa=std.querySelector("Fa")?.textContent||"";
+    const le=std.querySelector("Le")?.textContent||"";
+    const ra=std.querySelector("Ra")?.textContent||"";
+    const info=std.querySelector("If")?.textContent||"";
+
+    const lesson=document.createElement("div"); lesson.className="lesson";
+    const left=document.createElement("div"); left.className="time";
+    left.innerHTML=`<div style="font-weight:700">${st}</div><div style="font-size:12px;color:var(--muted)">${beg}<br>– ${end}</div>`;
+    left.prepend(iconTagFor(fa));
+
+    const right=document.createElement("div"); right.className="lcontent";
+    const top=document.createElement("div"); top.className="lrow";
+    const subject=document.createElement("div"); subject.className="subject"; subject.textContent=fa||"—";
+    const meta2=document.createElement("div"); meta2.className="fmeta"; meta2.textContent=(le?le:"")+(ra?` • ${ra}`:"");
+
+    top.appendChild(subject); top.appendChild(meta2); right.appendChild(top);
+    if(info){ const inf=document.createElement("div"); inf.className="info-line"; inf.textContent=info; right.appendChild(inf); }
+
+    lesson.appendChild(left); lesson.appendChild(right); lessonList.appendChild(lesson);
+  });
+
+  card.appendChild(lessonList);
+  mainContent.appendChild(card);
+}
+
+async function fetchPlanFor(profile,dateStr){
+  const params=new URLSearchParams({ school_code:profile.school, username:profile.username, password:profile.password, date:dateStr });
+  const url=PROXY+"?"+params.toString();
+  try{ const r=await fetch(url); if(!r.ok) return null; const text=await r.text(); if(!text||!text.includes("<VpMobil")) return null; return new DOMParser().parseFromString(text,"application/xml"); }catch(e){ return null; }
+}
+
+async function initApp(){
+  const profile=getProfile();
+  if(!profile||!profile.school||!profile.username||!profile.password||!profile.klasse){ profileForm.style.display="block"; document.getElementById("nav-profile").classList.add("active"); return; }
+  else{ profileForm.style.display="none"; mainContent.style.display="block"; infoBox.style.display="block"; profileMini.innerHTML=`<div style="font-size:13px;color:var(--muted)">${profile.klasse} • ${SCHOOLS.find(s=>s[1]===profile.school)?.[0]||""}</div>`; }
+
+  const now=new Date(); const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let dow=today.getDay(); if(dow===6) today.setDate(today.getDate()+2); else if(dow===0) today.setDate(today.getDate()+1);
+
+  const tomorrow=new Date(today); tomorrow.setDate(today.getDate()+1);
+  const afterCutoff=now.getHours()>=CUTOFF_HOUR;
+
+  let xml=null; let usedDate=formatDateYYYYMMDD(today); let displayLabel="Heute";
+
+  if(afterCutoff){ const d=formatDateYYYYMMDD(tomorrow); xml=await fetchPlanFor(profile,d); if(xml){ usedDate=d; displayLabel=`Morgen — ${humanDate(tomorrow)}`; } else { xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`;} }
+  else { xml=await fetchPlanFor(profile,formatDateYYYYMMDD(today)); usedDate=formatDateYYYYMMDD(today); displayLabel=`Heute — ${humanDate(today)}`; if(!xml){ const xml2=await fetchPlanFor(profile,formatDateYYYYMMDD(tomorrow)); if(xml2){ xml=xml2; usedDate=formatDateYYYYMMDD(tomorrow); displayLabel=`Morgen — ${humanDate(tomorrow)}`; } } }
+
+  headerSub.textContent=displayLabel;
+
+  if(!xml){ mainContent.innerHTML=`<div class="plan-card"><div class="plan-head"><div class="class-name">Keine Vertretungsplan-Daten</div><div class="plan-meta">Für ${displayLabel} sind keine Daten verfügbar.</div></div></div>`; return; }
+
+  const zusatz=Array.from(xml.getElementsByTagName("ZiZeile")).map(n=>n.textContent?.trim()).filter(Boolean);
+  showInfoLines(zusatz);
+
+  renderTimelineForClass(xml,profile.klasse);
+  profile._lastFetched=usedDate; saveProfile(profile);
+}
+
+document.getElementById("pf-save").addEventListener("click",ev=>{ ev.preventDefault(); const school=pfSchool.value; const username=document.getElementById("pf-username").value; const password=document.getElementById("pf-password").value; const klasse=document.getElementById("pf-class").value.trim(); if(!school||!username||!password||!klasse){ alert("Bitte alle Felder ausfüllen."); return; } const profile={school,username,password,klasse}; saveProfile(profile); location.reload(); });
+document.getElementById("nav-home").addEventListener("click",()=>{ document.getElementById("nav-home").classList.add("active"); document.getElementById("nav-profile").classList.remove("active"); mainContent.style.display="block"; infoBox.style.display="block"; profileForm.style.display="none"; initApp(); });
+document.getElementById("nav-profile").addEventListener("click",()=>{ document.getElementById("nav-profile").classList.add("active"); document.getElementById("nav-home").classList.remove("active"); mainContent.style.display="none"; infoBox.style.display="none"; profileForm.style.display="block"; document.querySelector(".app").scrollIntoView(); });
+
+window.addEventListener("load",()=>{ const profile=getProfile(); if(profile){ pfSchool.value=profile.school||""; document.getElementById("pf-username").value=profile.username||"schueler"; document.getElementById("pf-password").value=profile.password||""; document.getElementById("pf-class").value=profile.klasse||""; profileForm.style.display="none"; } else profileForm.style.display="block"; initApp(); });
+</script>
+</body>
+</html>
