@@ -5,23 +5,35 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>VPlan</title>
 <style>
+/* ---------------------------------------------------
+   DARK MODE VARIABLES
+--------------------------------------------------- */
 :root{
-  --bg:#f4f6f8;
-  --card:#fff;
-  --muted:#6b7280;
-  --accent:#007bff;
-  --info-bg:#fffbe6;
-  --info-border:#ffc107;
-  --lesson-accent: #eef2ff;
-  --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  --bg:#0d1117;
+  --card:#161b22;
+  --muted:#8b949e;
+  --accent:#6eecbd;
+
+  --info-bg:#1f6feb22;
+  --info-border:#58a6ff;
+
+  --lesson-accent:#21262d;
+
+  --shadow: 0 6px 18px rgba(0,0,0,0.6);
   --radius:12px;
+
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color-scheme: dark;
 }
+
+/* ---------------------------------------------------
+   GLOBAL
+--------------------------------------------------- */
 *{box-sizing:border-box}
 body{
   margin:0;
   background:var(--bg);
-  color:#111827;
+  color:#c9d1d9;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   min-height:100vh;
@@ -30,31 +42,188 @@ body{
   align-items:center;
   padding:16px 12px 80px;
 }
+
 .app { width: 100%; max-width:920px; }
-.header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
-.h-title { font-size:20px; font-weight:600; color:#0f172a; }
-.info-box{ display:none; background:var(--info-bg); border-left:6px solid var(--info-border); padding:12px 14px; border-radius:10px; box-shadow:var(--shadow); margin-bottom:12px; color:#1f2937; }
-.plan-card{ background:var(--card); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; }
-.plan-head{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-.class-name{ font-weight:700; color:var(--accent) }
-.plan-meta{ color:var(--muted); font-size:13px }
-.lesson-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px }
-.lesson{ display:grid; grid-template-columns:64px 1fr; gap:10px; align-items:center; padding:10px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); box-shadow: 0 3px 8px rgba(15,23,42,0.04); }
-.lesson .time { font-size:13px; color:var(--muted); text-align:center; }
-.icon { width:48px; height:48px; border-radius:10px; background:var(--lesson-accent); display:flex; align-items:center; justify-content:center; overflow:hidden; margin:auto; }
-.icon img{ width:36px; height:36px; object-fit:contain }
-.lcontent{ display:flex; flex-direction:column; gap:6px }
-.lrow{ display:flex; align-items:center; gap:8px; flex-wrap:wrap }
-.subject{ font-weight:600 }
+
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.h-title { font-size:20px; font-weight:600; color:#e6edf3; }
+
+.plan-meta { color:var(--muted); font-size:13px }
+
+/* ---------------------------------------------------
+   INFO BOX
+--------------------------------------------------- */
+.info-box{
+  display:none;
+  background:var(--info-bg);
+  border-left:6px solid var(--info-border);
+  padding:12px 14px;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  color:#c9d1d9;
+}
+
+/* ---------------------------------------------------
+   PLAN CARD
+--------------------------------------------------- */
+.plan-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.plan-head{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.class-name{
+  font-weight:700;
+  color:var()
+}
+
+/* ---------------------------------------------------
+   LESSONS
+--------------------------------------------------- */
+.lesson-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:6px;
+}
+
+.lesson{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  box-shadow:0 3px 8px rgba(0,0,0,0.4);
+}
+
+.lesson .time {
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.icon {
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:var(--lesson-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin:auto;
+}
+
+.icon img{
+  width:36px;
+  height:36px;
+  object-fit:contain
+}
+
+.subject{ font-weight:600; color:#e6edf3 }
+
 .fmeta{ color:var(--muted); font-size:13px }
-.info-line{ color:#334155; font-size:13px; background:#f8fafc; padding:6px 8px; border-radius:8px }
-.bottom-nav{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:100%; max-width:920px; display:flex; justify-content:space-between; gap:10px; padding:10px; box-sizing:border-box; pointer-events:auto; }
-.nav-row{ display:flex; gap:8px; background:#fff; padding:8px; border-radius:14px; box-shadow:var(--shadow); width:100%; justify-content:space-around; }
-.nav-item{ display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted) }
-.nav-item.active{ color:var(--accent); font-weight:600 }
-.button{ background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; border:none; cursor:pointer; }
-.profile-card{ background:var(--card); padding:12px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px }
-@media (max-width:520px){ .lesson{grid-template-columns:56px 1fr} .icon img{width:28px;height:28px} }
+
+.info-line{
+  color:#9fb8d1;
+  font-size:13px;
+  background:#21262d;
+  padding:6px 8px;
+  border-radius:8px
+}
+
+/* ---------------------------------------------------
+   PROFILE CARD
+--------------------------------------------------- */
+.profile-card{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px
+}
+
+input,select{
+  background:#21262d;
+  color:#c9d1d9;
+  border:1px solid #30363d;
+}
+
+.button {
+  background:#2385ff !important; 
+  color:#ffffff !important;
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+/* ---------------------------------------------------
+   NAVIGATION
+--------------------------------------------------- */
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:16px;
+  width:100%;
+  max-width:920px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px;
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+
+.nav-row{
+  display:flex;
+  gap:8px;
+  background:var(--card);
+  padding:8px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  width:100%;
+  justify-content:space-around;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted)
+}
+
+.nav-item.active{
+  color:var();
+  font-weight:600
+}
+
+@media (max-width:520px){
+  .lesson{grid-template-columns:56px 1fr}
+  .icon img{width:28px;height:28px}
+}
 </style>
 </head>
 <body>
@@ -123,24 +292,24 @@ const SCHOOLS = [
 
 /* ======= SUBJECT-MAPPING ======= */
 const SUBJECT_MAP = [
-  { keys:["daz", "de", "deu"], color:"#ffccd5", icon:"book_marked" },
+  { keys:["ast", "astro", "astronomie"], color:"#27a4c4", icon:"telescope" },
+  { keys:["bio", "bia", "biologie", "lzb"], color:"#71d670", icon:"microscope" },
+  { keys:["ch", "cha", "chemie", "lzc"], color:"#d2cd37", icon:"flask_conical" },
+  { keys:["daz", "de", "deu"], color:"#EA0023", icon:"book_marked" },
   { keys:["ma","maa", "lzm"], color:"#d1e7dd", icon:"pi" },
   { keys:["en", "eng", "englisch"], color:"#cfe2ff", icon:"union_jack" },
-  { keys:["bio", "bia", "biologie", "lzb"], color:"#d6f5d6", icon:"microscope" },
-  { keys:["ch", "cha", "chemie", "lzc"], color:"#B1DFAE", icon:"flask_conical" },
   { keys:["ph", "phy", "lzp", "pha", "physik"], color:"#ED6161", icon:"atom" },
   { keys:["geo", "geographie", "geografie"], color:"#41C213", icon:"earth" },
   { keys:["sp", "spo", "spm", "spw", "sport"], color:"#fff7aa", icon:"dumbbell" },
   { keys:["mu", "musik"], color:"#fde2e4", icon:"music" },
   { keys:["kunst","ku"], color:"#ffe5ec", icon:"brush" },
-  { keys:["ast", "astro", "astronomie"], color:"#B0C4DE", icon:"telescope" },
   { keys:["inf", "it", "informatik", "lzi"], color:"#1393C2", icon:"braces" },
   { keys:["re", "ree", "religion"], color:"#FAD7A0", icon:"church" },
   { keys:["eth", "ethik"], color:"#ED6161", icon:"heart_handshake" },
   { keys:["fr", "fra", "französisch"], color:"#FDEBD0", icon:"croissant" },
   { keys:["grw", "wirtschaft", "g/r/w"], color:"#9400d3", icon:"scale" },
-  { keys:["ge", "geschichte"], color:"#FF8B003F", icon:"scroll_text" },
-  { keys:["kl", "klassenleiter"], color:"#FF4D5D50", icon:"graduation_cap" },
+  { keys:["ge", "geschichte"], color:"#df9949", icon:"scroll_text" },
+   {keys:["---"], color:"#ffe5ec", icon:"square_x" },
 ];
 
 function formatDateYYYYMMDD(d){ const y=d.getFullYear(); const m=("0"+(d.getMonth()+1)).slice(-2); const day=("0"+d.getDate()).slice(-2); return ""+y+m+day; }
@@ -163,8 +332,8 @@ function showInfoLines(lines){ if(!lines||lines.length===0){ infoBox.style.displ
 
 function iconTagFor(fach){
   const name = (fach||"").toLowerCase().trim();
-  let chosenColor = "#ffe5ec";
-  let chosenIcon = "square_x"; 
+  let chosenColor = "#abbee2";
+  let chosenIcon = "graduation_cap"; 
   if(name === "---") { chosenIcon = "square_x"; chosenColor = "#f8d7da"; }
   else { for(const entry of SUBJECT_MAP){ if(entry.keys.some(k=>name.includes(k))){ chosenColor = entry.color; chosenIcon = entry.icon; break; } } }
   const img=document.createElement("img");
