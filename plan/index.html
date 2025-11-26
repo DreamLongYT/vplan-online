@@ -222,8 +222,8 @@ input,select{
 
 <script>
 const PROXY = "https://proxy-production-1eec.up.railway.app/api/fetch";
-const ICON_PATH = "https://raw.githubusercontent.com/VPlanPlus-Project/app/main/composeApp/src/commonMain/composeResources/drawable/";
-const FALLBACK_ICON = ICON_PATH + "square_x.png"; 
+const ICON_PATH = "https://unpkg.com/lucide-static@0.555.0/icons/";
+const FALLBACK_ICON = ICON_PATH + "square_x.svg"; 
 const CUTOFF_HOUR = 16;
 const SCHOOLS = [
   ["Gerhart-Hauptmann-Schule Oberschule Sohland","10566374"],
@@ -300,7 +300,7 @@ function iconTagFor(fach){
   else { for(const entry of SUBJECT_MAP){ if(entry.keys.some(k=>name.includes(k))){ chosenColor = entry.color; chosenIcon = entry.icon; break; } } }
   const img=document.createElement("img");
   img.alt=fach||"";
-  img.src=ICON_PATH + chosenIcon + ".png";
+  img.src=ICON_PATH + chosenIcon + ".svg";
   img.onerror=()=>{ img.src=FALLBACK_ICON; };
   const wrap=document.createElement("div"); wrap.className="icon"; wrap.style.backgroundColor=chosenColor; wrap.appendChild(img);
   return wrap;
